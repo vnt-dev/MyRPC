@@ -7,8 +7,13 @@
 2.构建springboot工程，在pom文件中加入依赖
 `
     <dependency>
+    
         <groupId>com.wherewego</groupId>
+        
         <artifactId>my-rpc</artifactId>
+        
         <version>0.0.1-alpha</version>
+        
     </dependency>
+    
 `
