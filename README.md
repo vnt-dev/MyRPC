@@ -8,13 +8,8 @@
 `
 
     <dependency>
-    
         <groupId>com.wherewego</groupId>
-        
         <artifactId>my-rpc</artifactId>
-        
         <version>0.0.1-alpha</version>
-        
     </dependency>
-    
 `
