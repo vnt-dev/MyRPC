@@ -42,13 +42,14 @@ public class Execute {
                 call.setResult(new RuntimeException("未找到名称为"+beanName+"的bean"));
                 return call;
             }
-            Method method = bean.getClass().getDeclaredMethod(methodName,paramTypes);
+            Method method = bean.getClass().getMethod(methodName,paramTypes);
             call.setResult(method.invoke(bean,params));
         }catch (ClassNotFoundException e){
             call.setResult(new RuntimeException("未找到接口"+interfaceName+"请填写注解value或在服务端实现接口"));
         }catch (NoSuchBeanDefinitionException e){
             call.setResult(new RuntimeException("未找到名称为"+beanName+"的bean"));
         }catch (NoSuchMethodException e){
+            e.printStackTrace();
             call.setResult(new RuntimeException("bean中没有"+methodName+"方法"));
         }catch (Exception e){
             e.printStackTrace();

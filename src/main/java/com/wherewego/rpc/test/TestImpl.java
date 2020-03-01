@@ -3,6 +3,7 @@ package com.wherewego.rpc.test;
 import org.springframework.stereotype.Service;
 
 /**
+ * 服务端测试代码
  * @Author:lbl
  * @Date:Created in 21:59 2020/2/29
  * @Modified By:

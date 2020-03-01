@@ -3,6 +3,7 @@ package com.wherewego.rpc;
 import com.wherewego.rpc.config.annotation.Reference;
 import com.wherewego.rpc.test.ITest;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -14,8 +15,8 @@ class RpcApplicationTests {
     @Test
     void contextLoads() {
         //查找服务器端对应方法并执行
-        System.out.println("test"+test.test("hello world"));
-       // System.out.println("test"+test.toString());toString方法也需要实现，不能直接调用
+//        System.out.println("test"+test.test("hello world"));
+        System.out.println("test"+test.toString());//toString方法也需要实现，不能直接调用
 //        if(test!=null){
 //            test.test();
 //            System.out.println(test.test());
