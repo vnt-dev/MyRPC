@@ -23,3 +23,12 @@ wherewego.rpc.protocol.name=wqRpc
 #应用名称
 wherewego.rpc.application.name=wqRpc
 ```
+4.消费者调用服务端接口
+例：
+```
+@Reference
+private ITest test;
+public void test(){
+    test.toString();
+}
+```
