@@ -24,7 +24,14 @@ wherewego.rpc.protocol.name=wqRpc
 wherewego.rpc.application.name=wqRpc
 ```
 4.服务提供者编写接口
-例：
+
+在启动类上加入注解，加入注解MyRPC才能启动
+```
+//包路径为com.wherewego.rpc.config.annotation
+@EnableMyRPC
+```
+
+测试代码，例：
 ```
 public interface ITest{
     int add(int a,int b);
@@ -39,9 +46,16 @@ public class TestImpl implements ITest{
 }
 ```
 5.消费者调用服务端接口
-例：
+
+在启动类上加入注解，加入注解MyRPC才能启动
 ```
-//使用myrpc提供的注解
+//包路径为com.wherewego.rpc.config.annotation
+@EnableMyRPC
+```
+
+测试代码，例：
+```
+//使用myrpc提供的注解 在com.wherewego.rpc.config.annotation包下
 @Reference
 private ITest test;
 public void test(){
