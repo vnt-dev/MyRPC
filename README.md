@@ -16,7 +16,7 @@
 ```
 #配置目标服务的地址
 wherewego.rpc.address=127.0.0.1:8088
-#配置服务提供者的端口号
+#配置服务提供者的端口号（如果当前的工程不是服务提供者，则可以不配置）
 wherewego.rpc.protocol.port=8088
 #通信协议
 wherewego.rpc.protocol.name=wqRpc
