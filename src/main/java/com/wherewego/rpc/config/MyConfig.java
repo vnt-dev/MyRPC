@@ -14,12 +14,12 @@ import org.springframework.util.StringUtils;
 public class MyConfig {
     @Value("${wherewego.rpc.application.name:wqRpc}")
     private String serverName;
-    @Value("${wherewego.rpc.address:null}")
-    private String address;
+//    @Value("${wherewego.rpc.address:null}")
+    private String address="127.0.0.1:8080";
     @Value("${wherewego.rpc.protocol.name:wqRpc}")
     private String protocol;
-    @Value("${wherewego.rpc.protocol.port:-1}")
-    private Integer port;
+//    @Value("${wherewego.rpc.protocol.port:-1}")
+    private Integer port=8080;
     @Bean
     public RpcConfig rpcConfig(){
         RpcConfig config = new RpcConfig();
