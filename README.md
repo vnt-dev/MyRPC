@@ -45,6 +45,7 @@ public class TestImpl implements ITest{
 @Reference
 private ITest test;
 public void test(){
-    test.add(a,b);
+    int sum = test.add(1,2);
+    System.out.println(sum);
 }
 ```
