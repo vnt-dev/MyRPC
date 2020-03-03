@@ -2,7 +2,6 @@ package com.wherewego.rpc.cilent.proxy;
 
 import com.wherewego.rpc.call.Call;
 import com.wherewego.rpc.call.NULL;
-import com.wherewego.rpc.channelPool.NettyChannelPool;
 import com.wherewego.rpc.cilent.ClientConnect;
 import com.wherewego.rpc.config.RpcConfig;
 import com.wherewego.rpc.handler.CallbackHandler;
@@ -30,8 +29,6 @@ public class ProxyFactory {
     private RpcConfig rpcConfig;
     @Autowired
     private ClientConnect client;
-    @Autowired
-    private NettyChannelPool nettyChannelPool;
 
     public <T> T getProxy(Class<T> tClass, final String beanName) {
 
@@ -44,18 +41,7 @@ public class ProxyFactory {
                 long t1 = System.currentTimeMillis();
                 final Call callResult = new Call();
                 // if("wqRpc".equals(rpcConfig.getProtocol())){//tcp协议
-//                Channel channel = client.channel("xxx", new CallbackHandler<Call>() {
-//                    @Override
-//                    public void callback(Call call) {
-//                        LOGGER.info("回调函数执行："+call.getResult());
-//                        if(!callResult.isBack()){
-//                            callResult.setBack(true);
-//                            callResult.setResult(call.getResult());
-//                        }
-//                    }
-//                });
-                //   }
-                Channel channel =  nettyChannelPool.syncGetChannel(new CallbackHandler<Call>() {
+                Channel channel = client.channel("xxx", new CallbackHandler<Call>() {
                     @Override
                     public void callback(Call call) {
                         LOGGER.info("回调函数执行："+call.getResult());
@@ -65,6 +51,7 @@ public class ProxyFactory {
                         }
                     }
                 });
+
                 Call call = new Call();
                 call.setBack(false);
                 call.setBeanName(beanName);
@@ -79,7 +66,7 @@ public class ProxyFactory {
                     Thread.yield();
                 }
                 //释放连接
-//                client.release(channel);
+                client.release(channel);
                 long t2 = System.currentTimeMillis();
                 LOGGER.info("耗时{}ms",t2-t1);
                 if(NULL.nul.equals(callResult.getResult())){
