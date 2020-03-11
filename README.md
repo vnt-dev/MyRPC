@@ -56,7 +56,7 @@ public class TestImpl implements ITest{
 测试代码，例：
 ```
 //使用myrpc提供的注解 在com.wherewego.rpc.config.annotation包下
-@Reference
+@MyRPCReference
 private ITest test;
 public void test(){
     int sum = test.add(1,2);
