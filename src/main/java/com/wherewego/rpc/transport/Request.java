@@ -8,7 +8,6 @@ package com.wherewego.rpc.transport;
  */
 public class Request {
     private int id;
-    private String serializeType;
     private String beanName;
     private String interfaceName;
     private String methodName;
@@ -21,14 +20,6 @@ public class Request {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getSerializeType() {
-        return serializeType;
-    }
-
-    public void setSerializeType(String serializeType) {
-        this.serializeType = serializeType;
     }
 
     public String getBeanName() {

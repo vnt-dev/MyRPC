@@ -23,16 +23,8 @@ public class ProtocolChooseHandler extends ByteToMessageDecoder {
     private static final int MAX_LENGTH = 23;
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> list) throws Exception {
-//        int length = byteBuf.readableBytes();
-//        LOGGER.info("长度{}",length);
-//
-//
-//        if(length<MAX_LENGTH){
-//            return;
-//        }
         String method = getBufStart(byteBuf);
         ChannelPipeline pipeline = ctx.pipeline();
-        LOGGER.info(method);
         switch (method){
             case "GET":
             case "POST":
@@ -55,6 +47,8 @@ public class ProtocolChooseHandler extends ByteToMessageDecoder {
         int length = in.readableBytes();
         if (length > MAX_LENGTH) {
             length = MAX_LENGTH;
+        }else if(length < MAX_LENGTH){
+            return "not http";
         }
 
         // 标记读位置

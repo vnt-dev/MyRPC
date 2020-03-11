@@ -34,7 +34,7 @@ public class Client {
         //获取一个地址
         ServicePool.Address address = ServicePool.getAddress(serverName);
         if(address==null){
-            throw new RuntimeException("连接异常，所有地址均连接不上");
+            throw new RuntimeException("连接异常，所有地址均不可用");
         }
         //拿连接池
         NettyChannelPool pool = poolMap.get(address.id);

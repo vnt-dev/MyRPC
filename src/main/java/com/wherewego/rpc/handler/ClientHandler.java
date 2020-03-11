@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Map;
+
 /**
  * 处理客户端连接事件
  * @Author:lbl
@@ -32,20 +34,28 @@ public class ClientHandler  extends ChannelInboundHandlerAdapter {
             //移除
             CallBackFactory.Item item = CallBackFactory.remove(ctx.channel().id(),request.getId());
             item.invoker.invoke(request);
-            synchronized (item.lock){
-                item.lock.notify();
+            if(item.lock!=null){
+                synchronized (item.lock){
+                    item.lock.notify();
+                }
             }
-        }else{
-
         }
 
     }
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        LOGGER.info("客户端异常"+cause.getMessage());
+        LOGGER.info("客户端异常");
         ctx.fireExceptionCaught(cause);
-        //出现异常应该都移除，并通知
-        //。。。。。。。
+        Map<Integer, CallBackFactory.Item> map = CallBackFactory.remove(ctx.channel().id());
+        LOGGER.info("当前回调方法数"+map.size());
+        for (CallBackFactory.Item item:map.values()){
+            item.invoker.invoke(cause);
+            if(item.lock!=null){
+                synchronized (item.lock){
+                    item.lock.notify();
+                }
+            }
+        }
     }
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {

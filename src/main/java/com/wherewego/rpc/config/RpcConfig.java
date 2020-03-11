@@ -8,8 +8,6 @@ package com.wherewego.rpc.config;
 public class RpcConfig {
     /*服务名称*/
     private String serverName;
-    /*服务地址*/
-    private String serverHost;
     /*服务端口*/
     private Integer serverPort;
     /*协议名称*/
@@ -45,13 +43,6 @@ public class RpcConfig {
         this.serverName = serverName;
     }
 
-    public String getServerHost() {
-        return serverHost;
-    }
-
-    public void setServerHost(String serverHost) {
-        this.serverHost = serverHost;
-    }
 
     public Integer getServerPort() {
         return serverPort;

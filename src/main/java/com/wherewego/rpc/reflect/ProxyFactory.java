@@ -29,8 +29,6 @@ public class ProxyFactory {
 
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                LOGGER.info("开始调用");
-                long t1 = System.currentTimeMillis();
                 //组装请求参数
                 Request request = new Request();
                 //给请求分配一个id

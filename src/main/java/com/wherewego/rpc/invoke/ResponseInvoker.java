@@ -32,7 +32,7 @@ public class ResponseInvoker implements Invoker<Response>{
         isResponse=true;
         result=response.getResult();
 
-        return null;
+        return result;
     }
 
 }

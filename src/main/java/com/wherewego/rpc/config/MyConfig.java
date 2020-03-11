@@ -36,18 +36,6 @@ public class MyConfig {
         config.setServerPort(port);
         config.setRegisterUri(registerUri);
         config.setRemoteAddress(address);
-//        if(!StringUtils.isEmpty(address)){
-//            try {
-//                int last = address.lastIndexOf(":");
-//                if(last<=0){
-//                    throw new RuntimeException("远程地址有误");
-//                }
-//                config.setRemotePort(Integer.parseInt(address.substring(last+1)));
-//                config.setRemoteHost(address.substring(0,last));
-//            }catch (Exception e){
-//                throw new RuntimeException("远程地址有误");
-//            }
-//        }
         return config;
     }
 }
