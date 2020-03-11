@@ -3,6 +3,7 @@ package com.wherewego.rpc.config.annotation;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
@@ -14,7 +15,7 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-@ComponentScan(basePackages = {"com.wherewego.rpc"})
+@Import(MyRPCConfigConfigurationSelector.class)
 public @interface EnableMyRPC {
 
 }

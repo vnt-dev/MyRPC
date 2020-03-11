@@ -11,6 +11,9 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface Reference {
-    String value() default "";
+public @interface MyRPCReference {
+    /*接口别名*/
+    String name() default "";
+    /*是否异步调用*/
+    boolean async() default false;
 }

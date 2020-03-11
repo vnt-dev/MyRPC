@@ -1,7 +1,7 @@
-package com.wherewego.rpc.cilent.processor;
+package com.wherewego.rpc.config;
 
-import com.wherewego.rpc.cilent.proxy.ProxyFactory;
-import com.wherewego.rpc.config.annotation.Reference;
+import com.wherewego.rpc.config.annotation.MyRPCReference;
+import com.wherewego.rpc.reflect.ProxyFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +11,12 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 
 /**
- * bean初始化前后执行处理
  * @Author:lbl
- * @Date:Created in 15:06 2020/2/29
+ * @Date:Created in 18:25 2020/3/7
  * @Modified By:
  */
 @Component
 public class MyRPCBeanPostProcessor implements BeanPostProcessor {
-    @Autowired
-    private ProxyFactory proxyFactory;
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         // TODO Auto-generated method stub
@@ -32,14 +29,14 @@ public class MyRPCBeanPostProcessor implements BeanPostProcessor {
         try {
             for (Field field:clz.getDeclaredFields()){
                 //找到有com.wherewego.rpc.annotation.Reference注解的变量
-                Reference reference = field.getAnnotation(Reference.class);
+                MyRPCReference reference = field.getAnnotation(MyRPCReference.class);
                 if(reference!=null){
-                    System.out.println("postProcessBeforeInitialization..."+reference.value());
                     boolean access = field.isAccessible();
-
                     field.setAccessible(true);
-                    //使用动态代理创建bean
-                    field.set(bean, proxyFactory.getProxy(field.getType(),reference.value()));
+                    if(field.get(bean)==null){
+                        //使用动态代理创建bean
+                        field.set(bean, ProxyFactory.getProxy(field.getType(),reference.name(),reference.async()));
+                    }
                     field.setAccessible(access);
                 }
             }
@@ -55,3 +52,4 @@ public class MyRPCBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 }
+

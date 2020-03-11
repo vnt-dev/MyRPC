@@ -2,8 +2,11 @@ package com.wherewego.rpc.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @Author:lbl
@@ -11,6 +14,7 @@ import org.springframework.util.StringUtils;
  * @Modified By:
  */
 @Configuration
+@ComponentScan("com.wherewego.rpc")
 public class MyConfig {
     @Value("${wherewego.rpc.application.name:wqRpc}")
     private String serverName;
@@ -18,26 +22,32 @@ public class MyConfig {
     private String address;
     @Value("${wherewego.rpc.protocol.name:wqRpc}")
     private String protocol;
+    @Value("${wherewego.rpc.serialize-type:protostuff}")
+    private String serializeType;
     @Value("${wherewego.rpc.protocol.port:-1}")
     private Integer port;
+    @Value("${wherewego.rpc.register:null}")
+    private String registerUri;
     @Bean
     public RpcConfig rpcConfig(){
         RpcConfig config = new RpcConfig();
         config.setServerName(serverName);
         config.setProtocol(protocol);
         config.setServerPort(port);
-        if(!StringUtils.isEmpty(address)){
-            try {
-                int last = address.lastIndexOf(":");
-                if(last<=0){
-                    throw new RuntimeException("远程地址有误");
-                }
-                config.setRemotePort(Integer.parseInt(address.substring(last+1)));
-                config.setRemoteHost(address.substring(0,last));
-            }catch (Exception e){
-                throw new RuntimeException("远程地址有误");
-            }
-        }
+        config.setRegisterUri(registerUri);
+        config.setRemoteAddress(address);
+//        if(!StringUtils.isEmpty(address)){
+//            try {
+//                int last = address.lastIndexOf(":");
+//                if(last<=0){
+//                    throw new RuntimeException("远程地址有误");
+//                }
+//                config.setRemotePort(Integer.parseInt(address.substring(last+1)));
+//                config.setRemoteHost(address.substring(0,last));
+//            }catch (Exception e){
+//                throw new RuntimeException("远程地址有误");
+//            }
+//        }
         return config;
     }
 }

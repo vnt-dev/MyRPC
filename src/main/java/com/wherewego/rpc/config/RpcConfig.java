@@ -6,12 +6,36 @@ package com.wherewego.rpc.config;
  * @Modified By:
  */
 public class RpcConfig {
+    /*服务名称*/
     private String serverName;
-    private String serverHost="127.0.0.1";
+    /*服务地址*/
+    private String serverHost;
+    /*服务端口*/
     private Integer serverPort;
+    /*协议名称*/
     private String protocol;
-    private String remoteHost;
-    private Integer remotePort;
+    /*序列化方式*/
+    private String serializeType;
+    /*注册中心地址*/
+    private String registerUri;
+    /*远程服务的地址*/
+    private String remoteAddress;
+
+    public String getRegisterUri() {
+        return registerUri;
+    }
+
+    public void setRegisterUri(String registerUri) {
+        this.registerUri = registerUri;
+    }
+
+    public String getSerializeType() {
+        return serializeType;
+    }
+
+    public void setSerializeType(String serializeType) {
+        this.serializeType = serializeType;
+    }
 
     public String getServerName() {
         return serverName;
@@ -45,19 +69,11 @@ public class RpcConfig {
         this.protocol = protocol;
     }
 
-    public String getRemoteHost() {
-        return remoteHost;
+    public String getRemoteAddress() {
+        return remoteAddress;
     }
 
-    public void setRemoteHost(String remoteHost) {
-        this.remoteHost = remoteHost;
-    }
-
-    public Integer getRemotePort() {
-        return remotePort;
-    }
-
-    public void setRemotePort(Integer remotePort) {
-        this.remotePort = remotePort;
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
     }
 }
