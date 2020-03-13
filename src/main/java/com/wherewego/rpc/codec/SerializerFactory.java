@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
  * @Date:Created in 22:46 2020/3/5
  * @Modified By:
  */
-public class SerializerFactory  {
-    public static Serializer instance(byte type){
-        switch (type){
+public class SerializerFactory {
+    public static Serializer instance(byte type) {
+        switch (type) {
             case SerializerType
                     .PROTO_STUFF://protostuff
                 return new ProtoBufSerializer<>();

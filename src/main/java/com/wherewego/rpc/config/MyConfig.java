@@ -28,8 +28,9 @@ public class MyConfig {
     private Integer port;
     @Value("${wherewego.rpc.register:null}")
     private String registerUri;
+
     @Bean
-    public RpcConfig rpcConfig(){
+    public RpcConfig rpcConfig() {
         RpcConfig config = new RpcConfig();
         config.setServerName(serverName);
         config.setProtocol(protocol);

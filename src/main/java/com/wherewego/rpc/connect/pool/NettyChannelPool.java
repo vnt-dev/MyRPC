@@ -11,6 +11,7 @@ import java.util.Random;
 
 /**
  * 连接池
+ *
  * @Author:lbl
  * @Date:Created in 22:18 2020/3/7
  * @Modified By:
@@ -18,13 +19,14 @@ import java.util.Random;
 public class NettyChannelPool {
     //连接数组
     private Channel[] channels;
-    private Object [] locks;
+    private Object[] locks;
     private String host;
     private int port;
     private int maxChannelCount;
     //这个是用于数据读写的线程组，所有连接都由这个线程组来调度读写事件
     private static NioEventLoopGroup group = new NioEventLoopGroup();
     private static Bootstrap client;
+
     static {
         client = new Bootstrap();
         client.group(group);
@@ -41,17 +43,19 @@ public class NettyChannelPool {
             }
         });
     }
-    public NettyChannelPool(){
-        this.maxChannelCount=2;
+
+    public NettyChannelPool() {
+        this.maxChannelCount = 2;
         this.channels = new Channel[maxChannelCount];
         this.locks = new Object[maxChannelCount];
         for (int i = 0; i < maxChannelCount; i++) {
             this.locks[i] = new Object();
         }
     }
-    public NettyChannelPool(String host,int port,int maxChannelCount) {
-        this.host=host;
-        this.port=port;
+
+    public NettyChannelPool(String host, int port, int maxChannelCount) {
+        this.host = host;
+        this.port = port;
         this.channels = new Channel[maxChannelCount];
         this.locks = new Object[maxChannelCount];
         for (int i = 0; i < maxChannelCount; i++) {
@@ -59,23 +63,27 @@ public class NettyChannelPool {
         }
 
     }
-    public void setHost(String host){
-        this.host=host;
+
+    public void setHost(String host) {
+        this.host = host;
     }
-    public void setPort(int port){
-        this.port=port;
+
+    public void setPort(int port) {
+        this.port = port;
     }
-    public void Handler(ChannelInitializer channelInitializer){
+
+    public void Handler(ChannelInitializer channelInitializer) {
         client.handler(channelInitializer);
     }
+
     public Channel getChannel() throws InterruptedException {
         int index = new Random().nextInt(channels.length);
-        if(channels[index]!=null&&channels[index].isActive()){
+        if (channels[index] != null && channels[index].isActive()) {
 
             return channels[index];
         }
-        synchronized (locks[index]){
-            if(channels[index]!=null&&channels[index].isActive()){
+        synchronized (locks[index]) {
+            if (channels[index] != null && channels[index].isActive()) {
                 return channels[index];
             }
             ChannelFuture future = client.connect(host, port).sync();
@@ -83,26 +91,28 @@ public class NettyChannelPool {
         }
         return channels[index];
     }
-    public void release(Channel channel){
+
+    public void release(Channel channel) {
 
     }
 
     /**
      * 移除一个连接
+     *
      * @param channel
      */
-    public void remove(Channel channel){
-        int i=0;
+    public void remove(Channel channel) {
+        int i = 0;
         channel.close();
-        for (;i<channels.length;i++){
-            if(channel==channels[i]){//找到对应的连接
+        for (; i < channels.length; i++) {
+            if (channel == channels[i]) {//找到对应的连接
                 break;
             }
         }
         //加锁移除
-        synchronized (locks[i]){
-            if(channel==channels[i]){
-                channels[i]=null;
+        synchronized (locks[i]) {
+            if (channel == channels[i]) {
+                channels[i] = null;
             }
         }
     }

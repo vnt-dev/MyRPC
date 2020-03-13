@@ -5,78 +5,84 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 存放所有服务提供者
+ *
  * @Author:lbl
  * @Date:Created in 22:58 2020/3/7
  * @Modified By:
  */
 public class ServicePool {
-    public static class Address{
+    public static class Address {
         public String id;
         public String host;
         public int port;
         public boolean isActive;//状态
         //public int weight=100;//0~100,值越大调用概率也越大
     }
+
     //一个接口对应一个应用名称
-    private static final Map<String,String> apiMap = new HashMap<>();
+    private static final Map<String, String> apiMap = new HashMap<>();
     //一个应用名称对应了一系列地址
     private static final Map<String, List<Address>> listMap = new HashMap<>();
     //是否配置注册中心
-    private static boolean isRegister=false;
-    public static final String CENTER="center";
-    public static void setIsRegister(boolean isRegister){
-        ServicePool.isRegister=isRegister;
+    private static boolean isRegister = false;
+    public static final String CENTER = "center";
+
+    public static void setIsRegister(boolean isRegister) {
+        ServicePool.isRegister = isRegister;
     }
 
     /**
      * 添加一个应用
+     *
      * @param api
      * @param application
      */
-    public static void addApplication(String api,String application){
-        apiMap.put(api,application);
+    public static void addApplication(String api, String application) {
+        apiMap.put(api, application);
     }
-    public static void addAddress(String application,String host,int port){
+
+    public static void addAddress(String application, String host, int port) {
         List<Address> list = listMap.get(application);
-        if(list==null){
-            synchronized (ServicePool.class){
+        if (list == null) {
+            synchronized (ServicePool.class) {
                 list = listMap.get(application);
-                if(list==null){
+                if (list == null) {
                     list = new ArrayList<>();
-                    listMap.put(application,list);
+                    listMap.put(application, list);
                 }
             }
         }
         Address address = new Address();
-        address.id=host+':'+port;
-        address.isActive=true;
-        address.host=host;
-        address.port=port;
+        address.id = host + ':' + port;
+        address.isActive = true;
+        address.host = host;
+        address.port = port;
         list.add(address);
     }
-    public static Address getAddress(String api){
+
+    public static Address getAddress(String api) {
         List<Address> list;
-        if(isRegister){
+        if (isRegister) {
             String application = apiMap.get(api);
             list = listMap.get(application);
-        }else{//没有注册中心的时候，顶多是集群服务，只会有一个队列,所有服务对应的名称都是center
+        } else {//没有注册中心的时候，顶多是集群服务，只会有一个队列,所有服务对应的名称都是center
             list = listMap.get(ServicePool.CENTER);
         }
-        if(list==null||list.isEmpty()){
+        if (list == null || list.isEmpty()) {
             return null;
         }
         List<Address> activeList = new ArrayList<>();
-        for (Address address:list){//找出有效的地址
-            if(address.isActive){
+        for (Address address : list) {//找出有效的地址
+            if (address.isActive) {
                 activeList.add(address);
             }
         }
         //没有就返回空
-        if(activeList.isEmpty()){
+        if (activeList.isEmpty()) {
             return null;
         }
         //只有一个没得选
-        if(activeList.size()==1){
+        if (activeList.size() == 1) {
             return activeList.get(0);
         }
         //随机选一个
@@ -86,13 +92,14 @@ public class ServicePool {
 
     /**
      * 地址不可用，就标记一下,这里有个隐患，服务不可用之后没办法自动恢复
+     *
      * @param addressID
      */
-    public static void remove(String addressID){
-        for (List<Address> list :listMap.values()){
-            for (Address address:list){
-                if(addressID.equals(address.id)){
-                    address.isActive=false;
+    public static void remove(String addressID) {
+        for (List<Address> list : listMap.values()) {
+            for (Address address : list) {
+                if (addressID.equals(address.id)) {
+                    address.isActive = false;
                 }
             }
         }

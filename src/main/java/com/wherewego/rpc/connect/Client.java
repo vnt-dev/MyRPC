@@ -16,42 +16,44 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Modified By:
  */
 public class Client {
-    public class RemoteChannel{
+    public class RemoteChannel {
         public String addressID;
         public Channel channel;
     }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 
     //不同服务地址用不同的连接池，即ip+端口对应一个连接池
-    private static Map<String, NettyChannelPool> poolMap=new ConcurrentHashMap<>();
+    private static Map<String, NettyChannelPool> poolMap = new ConcurrentHashMap<>();
 
     /**
      * 获取连接需要对应的服务名称
+     *
      * @param serverName
      * @return
      */
-    public RemoteChannel connect(String serverName){
+    public RemoteChannel connect(String serverName) {
         //获取一个地址
         ServicePool.Address address = ServicePool.getAddress(serverName);
-        if(address==null){
+        if (address == null) {
             throw new RuntimeException("连接异常，所有地址均不可用");
         }
         //拿连接池
         NettyChannelPool pool = poolMap.get(address.id);
         //线程安全
-        if(pool==null){
-            synchronized (Client.class){
+        if (pool == null) {
+            synchronized (Client.class) {
                 pool = poolMap.get(address.id);
-                if(pool==null){
-                    pool = new NettyChannelPool(address.host,address.port,1);
-                    poolMap.put(address.id,pool);
+                if (pool == null) {
+                    pool = new NettyChannelPool(address.host, address.port, 1);
+                    poolMap.put(address.id, pool);
                 }
             }
         }
         RemoteChannel remoteChannel = new RemoteChannel();
-        remoteChannel.addressID=address.id;
+        remoteChannel.addressID = address.id;
         try {
-            remoteChannel.channel=pool.getChannel();
+            remoteChannel.channel = pool.getChannel();
         } catch (InterruptedException e) {
             ServicePool.remove(remoteChannel.addressID);
             //再次获取
@@ -59,15 +61,17 @@ public class Client {
         }
         return remoteChannel;
     }
-    public void release(Channel channel){
+
+    public void release(Channel channel) {
 
     }
 
     /**
      * 连接不可用时用这个标记
+     *
      * @param remoteChannel
      */
-    public void remove(RemoteChannel remoteChannel){
+    public void remove(RemoteChannel remoteChannel) {
         ServicePool.remove(remoteChannel.addressID);
     }
 }

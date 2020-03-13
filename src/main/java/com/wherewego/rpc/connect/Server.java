@@ -32,28 +32,30 @@ public class Server {
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
+
     public void run(int port) throws InterruptedException {
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        bootstrap.childOption(ChannelOption.TCP_NODELAY,true);
-        bootstrap.option(ChannelOption.SO_BACKLOG,1024);
-        bootstrap.group(bossGroup,workerGroup)
+        bootstrap.childOption(ChannelOption.TCP_NODELAY, true);
+        bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
+        bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .localAddress(port)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("socketChoose",new ProtocolChooseHandler());
+                        pipeline.addLast("socketChoose", new ProtocolChooseHandler());
 //                        pipeline.addLast(new TransportCodec());
 //                        pipeline.addLast(new ServerHandler());
                     }
                 });
         bootstrap.bind().sync();
-        LOGGER.info("=========Netty TCP监听已启动，端口{}========",port);
+        LOGGER.info("=========Netty TCP监听已启动，端口{}========", port);
     }
+
     @PreDestroy
     private void destory() throws InterruptedException {
         if (null != bossGroup) {

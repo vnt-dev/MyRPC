@@ -12,7 +12,8 @@ public class IntegerFactory {
         private static final AtomicInteger INSTANCE = new AtomicInteger(0);
     }
 
-    private IntegerFactory(){}
+    private IntegerFactory() {
+    }
 
     public static int getSeq() {
         return SingletonHolder.INSTANCE.incrementAndGet();

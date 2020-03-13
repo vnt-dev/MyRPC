@@ -10,12 +10,14 @@ import org.springframework.core.type.AnnotationMetadata;
 
 /**
  * 注入配置类
+ *
  * @Author:lbl
  * @Date:Created in 21:55 2020/3/9
  * @Modified By:
  */
 public class MyRPCConfigConfigurationSelector implements ImportSelector, BeanFactoryAware {
     private BeanFactory beanFactory;
+
     @Override
     public String[] selectImports(AnnotationMetadata annotationMetadata) {
         return new String[]{MyConfig.class.getName()};

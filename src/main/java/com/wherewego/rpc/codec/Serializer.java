@@ -9,5 +9,6 @@ import io.netty.buffer.ByteBuf;
  */
 public interface Serializer<T> {
     byte[] serialize(T t);
-    T deserialize(byte[] bytes,Class<T> clazz);
+
+    T deserialize(byte[] bytes, Class<T> clazz);
 }

@@ -13,19 +13,23 @@ import java.util.List;
 
 /**
  * 用于服务器判断HTTP协议还是TCP协议
+ *
  * @Author:lbl
  * @Date:Created in 23:20 2020/3/6
  * @Modified By:
  */
 public class ProtocolChooseHandler extends ByteToMessageDecoder {
     private final static Logger LOGGER = LoggerFactory.getLogger(ProtocolChooseHandler.class);
-    /** 默认暗号长度为23 */
+    /**
+     * 默认暗号长度为23
+     */
     private static final int MAX_LENGTH = 23;
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> list) throws Exception {
         String method = getBufStart(byteBuf);
         ChannelPipeline pipeline = ctx.pipeline();
-        switch (method){
+        switch (method) {
             case "GET":
             case "POST":
             case "HEAD":
@@ -35,19 +39,20 @@ public class ProtocolChooseHandler extends ByteToMessageDecoder {
             case "TRACE":
             case "CONNECT":
                 //是http请求
-                LOGGER.info("协议方法{}",method);
+                LOGGER.info("协议方法{}", method);
                 break;
-                default:
-                    new MyRPCProtocol().initChannel(pipeline);
+            default:
+                new MyRPCProtocol().initChannel(pipeline);
                 //普通tcp连接
         }
         pipeline.remove(this);//后续不需要判断了，把自己移除
     }
-    private String getBufStart(ByteBuf in){
+
+    private String getBufStart(ByteBuf in) {
         int length = in.readableBytes();
         if (length > MAX_LENGTH) {
             length = MAX_LENGTH;
-        }else if(length < MAX_LENGTH){
+        } else if (length < MAX_LENGTH) {
             return "not http";
         }
 
@@ -57,11 +62,11 @@ public class ProtocolChooseHandler extends ByteToMessageDecoder {
         in.readBytes(content);
         in.resetReaderIndex();
         StringBuffer str = new StringBuffer();
-        for(int i=0;i<length;i++){
-            if(content[i]==0x00100000){//读到空格就结束
+        for (int i = 0; i < length; i++) {
+            if (content[i] == 0x00100000) {//读到空格就结束
                 break;
             }
-            str.append((char)content[i]);
+            str.append((char) content[i]);
         }
         return str.toString();
     }

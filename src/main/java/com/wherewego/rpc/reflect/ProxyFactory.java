@@ -22,7 +22,7 @@ public class ProxyFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyFactory.class);
 
-    public static  <T> T getProxy(Class<T> tClass, final String beanName,boolean async) {
+    public static <T> T getProxy(Class<T> tClass, final String beanName, boolean async) {
 
         final String interfaceName = tClass.getName();
         InvocationHandler handler = new InvocationHandler() {
@@ -40,8 +40,8 @@ public class ProxyFactory {
                 request.setParams(args);
                 //调用请求处理器
                 Object object = new RequestInvoker().invoke(request);
-                if(object instanceof Throwable){
-                    throw (Throwable)object;
+                if (object instanceof Throwable) {
+                    throw (Throwable) object;
                 }
                 return object;
             }

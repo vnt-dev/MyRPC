@@ -21,21 +21,21 @@ public class MyRPCBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         // TODO Auto-generated method stub
         Class<?> clz;
-        if(AopUtils.isAopProxy(bean)){
+        if (AopUtils.isAopProxy(bean)) {
             clz = AopUtils.getTargetClass(bean);
-        }else{
+        } else {
             clz = bean.getClass();
         }
         try {
-            for (Field field:clz.getDeclaredFields()){
+            for (Field field : clz.getDeclaredFields()) {
                 //找到有com.wherewego.rpc.annotation.Reference注解的变量
                 MyRPCReference reference = field.getAnnotation(MyRPCReference.class);
-                if(reference!=null){
+                if (reference != null) {
                     boolean access = field.isAccessible();
                     field.setAccessible(true);
-                    if(field.get(bean)==null){
+                    if (field.get(bean) == null) {
                         //使用动态代理创建bean
-                        field.set(bean, ProxyFactory.getProxy(field.getType(),reference.name(),reference.async()));
+                        field.set(bean, ProxyFactory.getProxy(field.getType(), reference.name(), reference.async()));
                     }
                     field.setAccessible(access);
                 }
