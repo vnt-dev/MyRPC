@@ -1,5 +1,7 @@
 package com.wherewego.rpc.transport;
 
+import java.util.Arrays;
+
 /**
  * 自定义的tcp通信协议（MyRPC）
  * @Author:lbl
@@ -7,10 +9,13 @@ package com.wherewego.rpc.transport;
  * @Modified By:
  */
 public class Transport {
-    //请求头四个字节
+    //请求头字节数
     public static final int HAND_LENGTH=5;
-    private int length;//头部
-    private byte serializeType;//消息体编码方式
+    //4个字节
+    private int length=0;//消息体字节数
+    //frameType和serializeType合占一个字节
+    private byte frameType=0;//消息类型
+    private byte serializeType=0;//消息体编码方式
     private byte[] bytes;//消息体
 
     public int getLength() {
@@ -19,6 +24,14 @@ public class Transport {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    public byte getFrameType() {
+        return frameType;
+    }
+
+    public void setFrameType(byte frameType) {
+        this.frameType = frameType;
     }
 
     public byte getSerializeType() {
@@ -35,5 +48,15 @@ public class Transport {
 
     public void setBytes(byte[] bytes) {
         this.bytes = bytes;
+    }
+
+    @Override
+    public String toString() {
+        return "Transport{" +
+                "length=" + length +
+                ", frameType=" + frameType +
+                ", serializeType=" + serializeType +
+                ", bytes=" + Arrays.toString(bytes) +
+                '}';
     }
 }

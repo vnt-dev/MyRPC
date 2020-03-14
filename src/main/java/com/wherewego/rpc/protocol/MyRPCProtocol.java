@@ -15,7 +15,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 public class MyRPCProtocol implements Protocol{
     @Override
     public void initChannel(ChannelPipeline pipeline) {
-//        pipeline.addLast("idleStateHandler", new IdleStateHandler(60, 0, 0));
+        pipeline.addLast("idleStateHandler", new IdleStateHandler(60, 0, 0));
         pipeline.addLast(new TransportCodec());
         pipeline.addLast(new ServerHandler());
     }

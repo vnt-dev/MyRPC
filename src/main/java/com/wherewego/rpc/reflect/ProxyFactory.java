@@ -18,7 +18,7 @@ import java.lang.reflect.Proxy;
  * @Date:Created in 19:04 2020/3/7
  * @Modified By:
  */
-public class ProxyFactory {
+public final class ProxyFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyFactory.class);
 
@@ -39,7 +39,7 @@ public class ProxyFactory {
                 request.setParamTypes(method.getParameterTypes());
                 request.setParams(args);
                 //调用请求处理器
-                Object object = new RequestInvoker().invoke(request);
+                Object object = new RequestInvoker(async).invoke(request);
                 if(object instanceof Throwable){
                     throw (Throwable)object;
                 }

@@ -1,5 +1,7 @@
 package com.wherewego.rpc.invoke;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * 方法处理器接口
  * @Author:lbl
@@ -7,5 +9,5 @@ package com.wherewego.rpc.invoke;
  * @Modified By:
  */
 public interface Invoker<T> {
-    Object invoke(T t);
+    Object invoke(T t) throws Exception;
 }

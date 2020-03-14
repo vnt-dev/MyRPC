@@ -4,7 +4,6 @@ import com.wherewego.rpc.context.SpringBeanFactory;
 import com.wherewego.rpc.transport.Request;
 import com.wherewego.rpc.transport.Response;
 import org.springframework.beans.BeansException;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,8 +15,7 @@ import java.lang.reflect.Method;
  * @Date:Created in 23:16 2020/3/6
  * @Modified By:
  */
-@Component
-public class ServerInvoker implements Invoker<Request>{
+public class ServerMethodInvoker implements Invoker<Request>{
 
     @Override
     public Object invoke(Request request) {

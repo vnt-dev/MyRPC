@@ -1,7 +1,6 @@
 package com.wherewego.rpc.connect;
 
 import com.wherewego.rpc.config.RpcConfig;
-import com.wherewego.rpc.connect.pool.NettyChannelPool;
 import com.wherewego.rpc.connect.pool.ServicePool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
