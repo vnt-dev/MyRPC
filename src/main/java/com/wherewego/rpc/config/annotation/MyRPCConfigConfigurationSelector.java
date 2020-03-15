@@ -15,7 +15,6 @@ import org.springframework.core.type.AnnotationMetadata;
  * @Modified By:
  */
 public class MyRPCConfigConfigurationSelector implements ImportSelector, BeanFactoryAware {
-    private BeanFactory beanFactory;
     @Override
     public String[] selectImports(AnnotationMetadata annotationMetadata) {
         return new String[]{MyConfig.class.getName()};

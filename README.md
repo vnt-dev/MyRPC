@@ -36,8 +36,8 @@ wherewego.rpc.application.name=wqRpc
 public interface ITest{
     int add(int a,int b);
 }
-//使用springboot中的注解即可
-@Service
+//使用myrpc提供的注解com.wherewego.rpc.config.annotation.MyRPCService
+@MyRPCService
 public class TestImpl implements ITest{
     @Override
     public int add(int a,int b){
